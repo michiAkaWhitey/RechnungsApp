@@ -1,0 +1,1 @@
+This App should caputre a bill and save the data to a db

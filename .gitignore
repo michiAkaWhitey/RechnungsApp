@@ -1,6 +1,7 @@
 # my stuuf
 data/
 snippets/
+*.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

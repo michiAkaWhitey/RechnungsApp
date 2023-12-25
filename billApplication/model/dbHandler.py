@@ -1,5 +1,6 @@
 import sqlite3
-from app.model.dataRepresentation import FormData
+from typing import List
+from billApplication.model.dataRepresentation import FormData
 
 class DatabaseHandler():
     def __init__(self) -> None:
@@ -30,7 +31,16 @@ class DatabaseHandler():
 
         self._execute(command, data.toTuple())
 
-
+    def getColumnNames(self) -> list:
+        '''returns all the column names from the used table'''
+        return ("date", "price", "company", "tags")
+    
+    def returnMetaData(self):
+        command = """SELECT date, price, company, tags FROM bills """
+        self._execute(command, ())
+        rows = self.cursor.fetchall()
+        return rows
+    
     def _execute(self, command: str, args: tuple) -> None:
         '''excecutes a given command'''
         self.cursor.execute(command, args)

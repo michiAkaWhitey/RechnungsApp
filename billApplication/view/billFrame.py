@@ -6,7 +6,7 @@ from tkinter.filedialog import askopenfile
 from tkinter import messagebox
 
 import cv2
-from view.autoCompleteEntry import AutocompleteEntry
+from ..view.autoCompleteEntry import AutocompleteEntry
 
 
 class FormVariables:
@@ -40,7 +40,7 @@ class FormVariables:
             "img": self.img}
 
 
-class BillForm(tk.Frame):
+class BillFrame(tk.Frame):
     def __init__(self, parent):
         self.parent = parent
         super().__init__(master=self.parent)
@@ -77,17 +77,35 @@ class BillForm(tk.Frame):
         self.update()
 
     def getImage(self):
-        # get filename
-        filename = askopenfile(mode ='r', filetypes =[('Image Files', ['*.png', '*.jpg'])])
-        img = cv2.imread(str(filename.name))
+        cap = cv2.VideoCapture(0)
 
-        if img is None:
-            # show error dialoge
-            messagebox.showerror('System Error', 'Error: Cannot open Image!')
-            return
+        # Check if the webcam is opened correctly
+        if not cap.isOpened():
+            raise IOError("Cannot open webcam")
+
+        while True:
+            ret, frame = cap.read()
+            frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+            cv2.imshow('Input', frame)
+
+            c = cv2.waitKey(1)
+            if c == 27:
+                break
+
+        cap.release()
+        cv2.destroyAllWindows()
+
+        # # get filename
+        # filename = askopenfile(mode ='r', filetypes =[('Image Files', ['*.png', '*.jpg'])])
+        # img = cv2.imread(str(filename.name))
+
+        # if img is None:
+        #     # show error dialoge
+        #     messagebox.showerror('System Error', 'Error: Cannot open Image!')
+        #     return
         
-        self.data.img = img
-        self.data.imgFilename = filename.name
+        # self.data.img = img
+        # self.data.imgFilename = filename.name
 
     def update(self):
         if self.data.img is not None:
@@ -95,10 +113,4 @@ class BillForm(tk.Frame):
             self.b.config(text=s)
         else:
             self.b.config(text="Get Bill Photo")
-        self.after(100, self.update)
-
-# if __name__ == '__main__':
-#     from gui import App
-#     app = App()
-#     app.mainloop()
-        
+        self.after(100, self.update)    

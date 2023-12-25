@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-from view.dataEntry.form import BillForm 
+from ..view.billFrame import BillFrame 
 
 class App(tk.Tk):
     def __init__(self) -> None:
@@ -19,7 +19,7 @@ class App(tk.Tk):
 
         # Widgets
         self.label = ttk.Label(self, text='Bill Application')
-        self.bill = BillForm(parent=self)
+        self.bill = BillFrame(parent=self)
         self.commitButton = ttk.Button(self, text='Commit Form', command=self.commit)
         self.resetButton = ttk.Button(self, text='Reset Form', command=self.bill.data.reset)
 

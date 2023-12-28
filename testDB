@@ -1,7 +1,0 @@
-from app.model.dbHandler import DatabaseHandler
-
-if __name__ == "__main__":
-    hand = DatabaseHandler()
-    hand.connectToDb(dbName=r"app/bills.db")
-    #hand.createTable()
-    print(hand.returnMetaData())

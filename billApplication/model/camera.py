@@ -13,12 +13,13 @@ def _cornerPoints(bw: np.ndarray) -> np.ndarray:
 
     return approx
 
-
 def _getMask(frame: np.ndarray) -> np.ndarray:
     '''detects a paper by the use of GrabCut'''
-
+    print(frame.shape)
+    small = cv2.resize(frame, (0,0), fx=0.2, fy=0.2) 
+    print(small.shape)
     #CLAHE adjustment
-    lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+    lab = cv2.cvtColor(small, cv2.COLOR_BGR2LAB)
     l,a,b = cv2.split(lab)
     clahe = cv2.createCLAHE(clipLimit=2.0,tileGridSize=(8, 8))
     l = clahe.apply(l)
@@ -37,6 +38,8 @@ def _getMask(frame: np.ndarray) -> np.ndarray:
     cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
     mask2 = np.where((mask==cv2.GC_BGD)|(mask==cv2.GC_PR_BGD),0,1).astype('uint8')
     
+    mask2 = cv2.resize(mask2, (frame.shape[1], frame.shape[0]))
+    print(mask2.shape)
     return mask2
 
 def _order_points(pts: np.ndarray):
@@ -77,18 +80,7 @@ def _transformImg(frame: np.ndarray, corners: list) -> np.ndarray:
     final = cv2.warpPerspective(frame, M, (destination_corners[2][0], destination_corners[2][1]), flags=cv2.INTER_LINEAR)
     return final
   
-def extractBill(frame: np.ndarray) -> np.ndarray:
-    '''main function to retrieve the bill'''
-    mask = _getMask(frame=frame)
-    corners = _cornerPoints(bw = mask)
-    if len(corners) != 4:
-        return None
-    
-    return _transformImg(frame=frame, corners=corners)
-
-
-
-def grabImage(port: int = 0) -> np.ndarray:
+def _grabImage(port: int = 0) -> np.ndarray:
     '''opens the camera and show current frame
      ESC -> returns None, ENTER the current image'''
 
@@ -96,7 +88,7 @@ def grabImage(port: int = 0) -> np.ndarray:
     value = None
     while(True): 
         ret, frame = vid.read()
-        cv2.imshow('frame', frame) 
+        cv2.imshow("Camera", frame) 
         
         key = cv2.waitKey(10)
         if key == 27: # ASCI ESCAPE = 27 
@@ -109,33 +101,40 @@ def grabImage(port: int = 0) -> np.ndarray:
             break
     
     vid.release() # After the loop release the cap object 
-    cv2.destroyAllWindows() # Destroy all the windows 
+    cv2.destroyWindow("Camera") # Destroy all the windows
     return value
 
 
 def getBill() -> np.ndarray:
     '''to be written'''
     while True:
-        frame = grabImage()
-        if frame is None: return None
-        bill = extractBill(frame=frame)
-        if bill is None:
-            messagebox.showerror("Bill not found error", "Bill not found!")
+        img = _grabImage()
+        if img is None: 
             return None
-        else:
-            cv2.imshow("Bill", bill)
-            result = messagebox.askquestion("Ask for Result", "Are you satisfied with the result?")
-            if result == "yes": 
-                # ask for rotation
-                while result == "yes":
-                    result = messagebox.askquestion("Rotation?", "Rotation needed?")
-                    if result == "yes": bill = cv2.rotate(bill, cv2.ROTATE_90_CLOCKWISE)
-                    cv2.imshow("Bill", bill)
-                cv2.destroyWindow("Bill")
-                return bill
-            if result == "no":
-                cv2.destroyWindow("Bill")
-                continue
+        cv2.imshow("Frame", img)
+        cv2.waitKey(1)
+
+        mask = _getMask(frame=img)
+        corners = _cornerPoints(bw = mask)
+        cv2.destroyWindow("Frame")
+        if len(corners) != 4:
+            messagebox.showerror("Error", "Bill not found!")
+            continue
+
+        bill = _transformImg(frame=img, corners=corners)
+        cv2.imshow("Bill", bill)
+        result = messagebox.askquestion("Ask for Result", "Are you satisfied with the result?")
+        cv2.destroyWindow("Bill")
+        if result == "yes": 
+            # ask for rotation
+            while result == "yes":
+                result = messagebox.askquestion("Rotation?", "Rotation needed?")
+                if result == "yes": bill = cv2.rotate(bill, cv2.ROTATE_90_CLOCKWISE)
+                cv2.imshow("Bill", bill)
+            cv2.destroyWindow("Bill")
+            return bill
+        if result == "no":
+            continue
 
 
 

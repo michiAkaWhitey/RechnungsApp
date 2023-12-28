@@ -4,6 +4,7 @@ from tkcalendar import DateEntry
 from datetime import date
 from tkinter.filedialog import askopenfile
 from tkinter import messagebox
+from billApplication.model.camera import getBill
 
 import cv2
 from ..view.autoCompleteEntry import AutocompleteEntry
@@ -77,35 +78,7 @@ class BillFrame(tk.Frame):
         self.update()
 
     def getImage(self):
-        cap = cv2.VideoCapture(0)
-
-        # Check if the webcam is opened correctly
-        if not cap.isOpened():
-            raise IOError("Cannot open webcam")
-
-        while True:
-            ret, frame = cap.read()
-            #frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
-            cv2.imshow('Input', frame)
-
-            c = cv2.waitKey(1)
-            if c == 27:
-                break
-
-        cap.release()
-        cv2.destroyAllWindows()
-
-        # # get filename
-        # filename = askopenfile(mode ='r', filetypes =[('Image Files', ['*.png', '*.jpg'])])
-        # img = cv2.imread(str(filename.name))
-
-        # if img is None:
-        #     # show error dialoge
-        #     messagebox.showerror('System Error', 'Error: Cannot open Image!')
-        #     return
-        
-        # self.data.img = img
-        # self.data.imgFilename = filename.name
+        self.data.img = getBill()
 
     def update(self):
         if self.data.img is not None:

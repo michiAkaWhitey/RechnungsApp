@@ -1,5 +1,5 @@
-from app.model.dbHandler import DatabaseHandler
-from app.model.dataRepresentation import FormData
+from billApplication.model.dbHandler import DatabaseHandler
+from billApplication.model.dataRepresentation import FormData
 import cv2
 import random
 

@@ -21,5 +21,5 @@ for i in range(50):
         tags=random.choices(["Sport", "Weihnachten","Elektronik","sonst","tanken","div"],k=2),
         img=img)
     print(f"Inserted to db = {p}")
-    hand.insertData(data=p)
+    hand.pushToDb(data=p)
 print("Success")

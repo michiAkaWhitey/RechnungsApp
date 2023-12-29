@@ -15,9 +15,7 @@ def _cornerPoints(bw: np.ndarray) -> np.ndarray:
 
 def _getMask(frame: np.ndarray) -> np.ndarray:
     '''detects a paper by the use of GrabCut'''
-    print(frame.shape)
     small = cv2.resize(frame, (0,0), fx=0.2, fy=0.2) 
-    print(small.shape)
     #CLAHE adjustment
     lab = cv2.cvtColor(small, cv2.COLOR_BGR2LAB)
     l,a,b = cv2.split(lab)
@@ -39,7 +37,6 @@ def _getMask(frame: np.ndarray) -> np.ndarray:
     mask2 = np.where((mask==cv2.GC_BGD)|(mask==cv2.GC_PR_BGD),0,1).astype('uint8')
     
     mask2 = cv2.resize(mask2, (frame.shape[1], frame.shape[0]))
-    print(mask2.shape)
     return mask2
 
 def _order_points(pts: np.ndarray):
@@ -80,7 +77,7 @@ def _transformImg(frame: np.ndarray, corners: list) -> np.ndarray:
     final = cv2.warpPerspective(frame, M, (destination_corners[2][0], destination_corners[2][1]), flags=cv2.INTER_LINEAR)
     return final
   
-def _grabImage(port: int = 0) -> np.ndarray:
+def _grabImage(port: int = 2) -> np.ndarray:
     '''opens the camera and show current frame
      ESC -> returns None, ENTER the current image'''
 

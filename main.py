@@ -1,4 +1,4 @@
-from billApplication.view.app import App
+from billApplication.controller import Controller
 
-app = App()
-app.mainloop()
+if __name__ == '__main__':
+    Controller()

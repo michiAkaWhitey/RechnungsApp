@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkcalendar import DateEntry
 from datetime import date
-from tkinter.filedialog import askopenfile
+
 from tkinter import messagebox
-from billApplication.model.camera import getBill
+from billApplication.view.camera import getBill
 
 import cv2
 from ..view.autoCompleteEntry import AutocompleteEntry
@@ -17,7 +17,6 @@ class FormVariables:
         self.company = tk.StringVar(master)
         self.tags = tk.StringVar(master)
         self.img = None
-        self.imgFilename = None
 
         self.reset()
 
@@ -28,8 +27,7 @@ class FormVariables:
         self.company.set("")
         self.tags.set("")
         self.img = None
-        self.imgFilename = None
-        
+
     def asDict(self) -> dict:
         '''returns the tk variables as dataclass'''
         t = self.tags.get().split(",")
@@ -82,8 +80,7 @@ class BillFrame(tk.Frame):
 
     def update(self):
         if self.data.img is not None:
-            s = str(self.data.imgFilename).split('/')[-1]
-            self.b.config(text=s)
+            self.b.config(text="Photo captured")
         else:
             self.b.config(text="Get Bill Photo")
         self.after(100, self.update)    

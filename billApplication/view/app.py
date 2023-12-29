@@ -2,12 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-from ..view.billFrame import BillFrame 
+from ..view.billFrame import BillFrame
+from ..model.dataRepresentation import FormData
 
 class App(tk.Tk):
-    def __init__(self) -> None:
+    def __init__(self, controller) -> None:
         '''Application GUI to same a bill to a db'''
         super().__init__()
+        self.con = controller
 
         self.title('Bill GUI')
         self.resizable(0, 0)
@@ -39,18 +41,18 @@ class App(tk.Tk):
         self.commitButton.pack(fill='both')
         self.resetButton.pack(fill='both')
 
+        self.mainloop()
+
     def commit(self):
         '''checks data and pass them to the dB'''
-        data = self.bill.data.asDict()
-        print(data)
+        formData = self.bill.data.asDict()
+        ret = self.con.insertData(data=formData)
 
-        # # validate input data
-        # if data.isDefault():
-        #     messagebox.showerror('Input Error', 'Error: You have to insert all necessary data!')
-        #     return
+        # validate input data
+        if ret == False:
+            messagebox.showerror('Input Error', 'Error: You have to insert all necessary data!')
+            return
         
-        # access to database
-        # to be done
-
-        # Reset Form
+        # show information and reset Form
+        messagebox.showinfo('Information', 'Sucessfully added to database!')
         self.bill.data.reset()

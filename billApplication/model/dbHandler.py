@@ -1,10 +1,11 @@
 import sqlite3
 from typing import List
-from billApplication.model.dataRepresentation import FormData
+from ..model.dataRepresentation import FormData
 
 class DatabaseHandler():
-    def __init__(self) -> None:
+    def __init__(self, controller) -> None:
         self._tableName = "bills"
+        self.con = controller
         
     def connectToDb(self, dbName: str) -> None:
         '''connects to a database and creates a cursor'''
@@ -23,7 +24,7 @@ class DatabaseHandler():
         date TEXT, price NUMERIC, company TEXT, tags TEXT, img BLOB)"""
         self._execute(command, ())
 
-    def insertData(self, data: FormData) -> None:
+    def pushToDb(self, data: FormData) -> None:
         '''inserts data to the table '''
         command = """INSERT INTO bills 
         ("date", "price", "company", "tags", "img")

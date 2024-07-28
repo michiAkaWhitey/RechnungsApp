@@ -1,1 +1,1 @@
-This App should caputre a bill and save the data to a db
+This App should capture a bill and save the data to a db

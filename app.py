@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
-users = {"admin": generate_password_hash("cr7_V+8")}
+users = {"admin": generate_password_hash("admin")}
 
 @auth.verify_password
 def verify_password(username, password):
@@ -16,7 +16,7 @@ def verify_password(username, password):
 @app.route('/')
 @auth.login_required
 def index():
-    return render_template("index.html") 
+    return render_template("bill.html") 
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Standard bootstrap CSS imports-->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css'>
+
+    <!-- Custom bootstrap CSS imports-->  
+    <link rel='stylesheet' href='/static/style.css'>
+    <link rel='stylesheet' href='/static/vendor/bootstrap-tagsinput.css'>
+    <link rel='stylesheet' href='/static/vendor/app.css'>
+
+    <title>Hello, world!</title>
+  </head>
+  
+  <body>
+
+    <form method="post" id="bill">
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="trip-start" value="2024-08-20"/>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" id="price" min="0.00" max="10000.00" step="0.01" />
+        </div>
+        <div class="form-group">
+            <label>Type your tags here:</label>
+            <input type="text" name="tag-input-field" id="tag-input-field" class="form-control" />
+        </div>
+    </form>
+
+<!-- Standard Bootstrap imports -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js'></script>
+
+<!-- Bootstrap tagsinput import -->
+<script src='/static/vendor/bootstrap-tagsinput.min.js'></script>
+
+
+<script>
+  
+ 
+  //get data pass to json
+  var task = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace("text"),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/static/assets/citynames.json'
+  });
+
+  task.initialize();
+
+  var elt = $("#tag-input-field");
+  elt.tagsinput({
+    itemValue: "value",
+    itemText: "text",
+    typeaheadjs: {
+      name: "task",
+      displayKey: "text",
+      source: task.ttAdapter()
+    }
+  });
+
+  
+</script>
+
+<!--
+  <script src="/static/script.js"></script>
+-->
+
+</body>
+</html>

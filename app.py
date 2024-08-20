@@ -1,11 +1,6 @@
 from flask import Flask, render_template
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.dbHandler import DatabaseHandler
-
-# connect to db
-db = DatabaseHandler()
-db.connectToDb(dbName='database/bills.db')
 
 app = Flask(__name__)
 

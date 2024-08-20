@@ -33,7 +33,12 @@
     <div class="form-group row">
     <label class="col-sm-1 col-form-label" for="company">Company:</label>
     <div class="col-sm-3">
-        <input type="text" class="form-control" id="company"" />
+        <input type="text" class="form-control" placeholder="Hofer, Billa, usw." list="list-companies" id="company"" />
+        <datalist id="list-companies">
+            {% for e in companies %}
+                <option>{{e}}</option>
+            {% endfor %}
+        </datalist>
     </div>
     </div>
 
@@ -66,6 +71,11 @@
 <!-- Bootstrap tagsinput import -->
 <script src='/static/vendor/bootstrap-tagsinput.min.js'></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', e => {
+        $('#company').autocomplete()
+    }, false);
+</script>
 
 <script>
   

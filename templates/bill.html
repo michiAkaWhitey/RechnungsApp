@@ -15,23 +15,47 @@
 
     <title>Hello, world!</title>
   </head>
-  
+
   <body>
 
-    <form method="post" id="bill">
-        <div class="form-group">
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="trip-start" value="2024-08-20"/>
-        </div>
-        <div class="form-group">
-            <label for="price">Price:</label>
-            <input type="number" id="price" min="0.00" max="10000.00" step="0.01" />
-        </div>
-        <div class="form-group">
-            <label>Type your tags here:</label>
-            <input type="text" name="tag-input-field" id="tag-input-field" class="form-control" />
-        </div>
+    <h1 class="text-center">Insert your Bill</h1><br>
+
+    <form class="content-center" method="post" id="bill">
+    <!-- Date of bill -->
+    <div class="form-group row">
+    <label class="col-sm-1 col-form-label" for="date">Date:</label>
+    <div class="col-sm-3">
+        <input type="date" class="form-control" id="date" name="date" />
+    </div>
+    </div>
+
+    <!-- Company where bought -->
+    <div class="form-group row">
+    <label class="col-sm-1 col-form-label" for="company">Company:</label>
+    <div class="col-sm-3">
+        <input type="text" class="form-control" id="company"" />
+    </div>
+    </div>
+
+
+    <!-- Price of Bill -->
+    <div class="form-group row">
+    <label class="col-sm-1 col-form-label" for="price">Price:</label>
+    <div class="col-sm-3">
+            <input type="number" class="form-control" id="price" min="0.00" max="any" step="0.01" />
+    </div>
+    </div>
+
+    <!-- Tags of Bill -->
+    <div class="form-group row">
+    <label class="col-sm-1 col-form-label" for="tags">Tags:</label>
+    <div class="col-sm-3">
+        <input type="text" class="form-control" name="tags" id="tags"/>
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Bill</button>
     </form>
+
 
 <!-- Standard Bootstrap imports -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
@@ -55,7 +79,7 @@
 
   task.initialize();
 
-  var elt = $("#tag-input-field");
+  var elt = $("#tags");
   elt.tagsinput({
     itemValue: "value",
     itemText: "text",

@@ -1,14 +1,10 @@
-feather.replace();
-
 const controls = document.querySelector('.controls');
 const cameraOptions = document.querySelector('.video-options>select');
 const video = document.querySelector('video');
 const canvas = document.querySelector('canvas');
 const screenshotImage = document.querySelector('img');
-const buttons = [...controls.querySelectorAll('button')];
 const btnSaveImg = document.querySelector('#saveImg')
 let streamStarted = false;
-const [play, pause] = buttons;
 let currentStream = null;
 
 const constraints = {
@@ -57,11 +53,9 @@ const startStream = (constraints, changeMode = false) => {
     }
 }
 
-play.onclick = () => {
+window.onload = () => {
     if (streamStarted) {
         video.play();
-        play.classList.add('d-none');
-        pause.classList.remove('d-none');
         return;
     }
     if ('mediaDevices' in navigator) {
@@ -74,12 +68,6 @@ cameraOptions.onchange = () => {
         exact: cameraOptions.value
     };
     startStream(constraints, true);
-}
-
-pause.onclick = () => {
-    video.pause();
-    play.classList.remove('d-none');
-    pause.classList.add('d-none');
 }
 
 btnSaveImg.onclick = () => {

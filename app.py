@@ -17,6 +17,11 @@ def verify_password(username, password):
 def index():
     return render_template("index.html")
 
+@app.post("/foo")
+def foo_post():
+    print('x')
+    return render_template("index.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

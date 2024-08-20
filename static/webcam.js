@@ -6,19 +6,20 @@ const video = document.querySelector('video');
 const canvas = document.querySelector('canvas');
 const screenshotImage = document.querySelector('img');
 const buttons = [...controls.querySelectorAll('button')];
+const btnSaveImg = document.querySelector('#saveImg')
 let streamStarted = false;
-const [play, pause, screenshot] = buttons;
+const [play, pause] = buttons;
 let currentStream = null;
 
 const constraints = {
     video: {
         width: {
-            min: 1280,
+            min: 640,
             ideal: 1920,
             max: 2560,
         },
         height: {
-            min: 720,
+            min: 480,
             ideal: 1080,
             max: 1440
         },
@@ -81,7 +82,7 @@ pause.onclick = () => {
     pause.classList.add('d-none');
 }
 
-screenshot.onclick = () => {
+btnSaveImg.onclick = () => {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);

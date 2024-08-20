@@ -29,7 +29,7 @@
     </div>
     </div>
 
-    <!-- Company where bought -->
+    <!-- Company where bill is from -->
     <div class="form-group row">
     <label class="col-sm-1 col-form-label" for="company">Company:</label>
     <div class="col-sm-3">
@@ -41,7 +41,6 @@
         </datalist>
     </div>
     </div>
-
 
     <!-- Price of Bill -->
     <div class="form-group row">
@@ -59,7 +58,16 @@
     </div>
     </div>
     <button type="submit" class="btn btn-primary">Send Bill</button>
-    </form>
+    
+    <!-- Image of Bill -->
+    <div>
+      <video id="vid" autoplay></video>
+    </div>
+    <br />
+    <button id="save_frame">Save Frame</button>
+  
+  </form>
+
 
 
 <!-- Standard Bootstrap imports -->
@@ -70,6 +78,26 @@
 
 <!-- Bootstrap tagsinput import -->
 <script src='/static/vendor/bootstrap-tagsinput.min.js'></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+      let video = document.getElementById("vid");
+      let mediaDevices = navigator.mediaDevices;
+      vid.muted = true;
+
+
+      // Accessing the user camera and video.
+      mediaDevices.getUserMedia({video: true, audio: false})
+          .then((stream) => {
+              // Changing the source of video to current stream.
+              video.srcObject = stream;
+              video.addEventListener("loadedmetadata", () => {
+                  video.play();
+              });
+          })
+          .catch(alert);
+  });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', e => {

@@ -22,7 +22,7 @@ def verify_password(username, password):
 @auth.login_required
 def index():
     companies = db.companyNames()
-    return render_template("bill.html", companies=companies) 
+    return render_template("index.html", companies=companies) 
 
 if __name__ == '__main__':
     app.run(debug=True)
